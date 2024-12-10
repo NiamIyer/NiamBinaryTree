@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 /**
  * An Integer Binary Search Tree
- * @author: Your Name Here
- * @version: Date
+ * @author: Niam Iyer
+ * @version: 12/9/24
  */
 
 public class BST {
@@ -48,6 +48,46 @@ public class BST {
      */
     public boolean search(int val) {
         // TODO: Complete the search function
+        if (val == root.getVal()) {
+            return true;
+        }
+        if (val > root.getVal()) {
+            if (search(val, root.getRight())) {
+                return true;
+            }
+        }
+        if (val < root.getVal()) {
+            if(search(val, root.getLeft())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean search(int val,  BSTNode side){
+        if (side.getVal() == val) {
+            return true;
+        }
+        if (side.getLeft() == null && side.getRight() == null) {
+            return false;
+        }
+        if ((side.getLeft() == null) && val < side.getVal()) {
+            return false;
+        }
+        if ((side.getRight() == null) && val > side.getVal()) {
+            return false;
+        }
+        if (val > side.getVal()) {
+            if (search(val, side.getRight())) {
+                return true;
+            }
+        }
+        if (val < side.getVal()) {
+            if(search(val, side.getLeft())) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -56,7 +96,18 @@ public class BST {
      */
     public ArrayList<BSTNode> getInorder() {
         // TODO: Complete inorder traversal
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        getInorder(root, arr);
         return null;
+    }
+
+    public void getInorder(BSTNode side, ArrayList<BSTNode> nodes){
+        //  modify arraylist
+        boolean inList = false;
+        if (side.getLeft() == null) {
+            nodes.add(side);
+        }
+
     }
 
     /**
