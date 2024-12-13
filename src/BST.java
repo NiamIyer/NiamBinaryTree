@@ -48,14 +48,17 @@ public class BST {
      */
     public boolean search(int val) {
         // TODO: Complete the search function
+        // Checks if the value is the root
         if (val == root.getVal()) {
             return true;
         }
+        // Checks the right subtree if val is bigger
         if (val > root.getVal()) {
             if (search(val, root.getRight())) {
                 return true;
             }
         }
+        // Checks the left subtree if val is smaller
         if (val < root.getVal()) {
             if(search(val, root.getLeft())) {
                 return true;
@@ -65,18 +68,23 @@ public class BST {
     }
 
     public boolean search(int val,  BSTNode side){
+        // Overloaded search function
+        // Base case for if the node equals the val
         if (side.getVal() == val) {
             return true;
         }
+        // Base case for if the node is a leaf
         if (side.getLeft() == null && side.getRight() == null) {
             return false;
         }
+        // Base cases for if there is no child on the side the val is supposed to be on
         if ((side.getLeft() == null) && val < side.getVal()) {
             return false;
         }
         if ((side.getRight() == null) && val > side.getVal()) {
             return false;
         }
+        // Checks recursively on the right/left subtree depending on the val
         if (val > side.getVal()) {
             if (search(val, side.getRight())) {
                 return true;
@@ -98,16 +106,22 @@ public class BST {
         // TODO: Complete inorder traversal
         ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
         getInorder(root, arr);
-        return null;
+        return arr;
     }
 
     public void getInorder(BSTNode side, ArrayList<BSTNode> nodes){
-        //  modify arraylist
-        boolean inList = false;
-        if (side.getLeft() == null) {
-            nodes.add(side);
+        //  Base case
+        if (side == null) {
+            return;
         }
-
+        // Runs recursively until the leftmost node
+        if (side.getLeft() != null) {
+            getInorder(side.getLeft(), nodes);
+        }
+        // Adds left node to list
+        nodes.add(side);
+        // Adds right node to list
+        getInorder(side.getRight(), nodes);
     }
 
     /**
@@ -115,15 +129,46 @@ public class BST {
      */
     public ArrayList<BSTNode> getPreorder() {
         // TODO: Complete preorder traversal
-        return null;
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        getPreorder(root, arr);
+        return arr;
+    }
+
+    public void getPreorder(BSTNode side, ArrayList<BSTNode> nodes) {
+        // Base case
+        if (side == null) {
+            return;
+        }
+        // Adds root of subtree, then recurses to add left
+        nodes.add(side);
+        getPreorder(side.getLeft(), nodes);
+        // Recurses to add right
+        getPreorder(side.getRight(), nodes);
+
     }
 
     /**
      * @return ArrayList of BSTNodes in postorder
      */
     public ArrayList<BSTNode> getPostorder() {
-        // TODO: Complete postorder traversal
-        return null;
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        getPostorder(root, arr);
+        return arr;
+    }
+
+    public void getPostorder(BSTNode side, ArrayList<BSTNode> nodes) {
+        // Base case
+        if (side == null) {
+            return;
+        }
+        // Adds right side first
+        if (side.getRight() != null) {
+            getPostorder(side.getRight(), nodes);
+        }
+        // Adds root of subtree next
+        nodes.add(side);
+        // Adds left side last
+        getPostorder(side.getLeft(), nodes);
     }
 
     /**
@@ -134,6 +179,28 @@ public class BST {
      */
     public void insert(int val) {
         // TODO: Complete insert
+        // Sets root to be the root of the new tree
+        if (root == null) {
+            root = new BSTNode(val);
+        }
+        else {
+            insert(val, root);
+        }
+    }
+
+    public BSTNode insert(int val, BSTNode side) {
+        // Finds where the side is null and creates a new node
+        if (side == null) {
+            side = new BSTNode(val);
+        }
+        // If the side is not null, looks at right or left subtree depending on value of val
+        if (val > side.getVal()) {
+            side.setRight(insert(val, side.getRight()));
+        }
+        if (val < side.getVal()) {
+            side.setLeft(insert(val, side.getLeft()));
+        }
+        return side;
     }
 
     /**
